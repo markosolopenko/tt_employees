@@ -1,0 +1,17 @@
+.employees-page {
+  display: flex;
+  padding: 10px;
+  &__list {
+    &__title {
+      font-size: 23px;
+      font-weight: bold;
+      margin-left: 50px;
+    }
+  }
+  &__birthday {
+    &__title {
+      font-size: 23px;
+      font-weight: bold;
+    }
+  }
+}

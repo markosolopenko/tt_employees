@@ -1,32 +1,32 @@
-import { EmployeesActions, IUsers } from '../actionCreators/employees';
+import { EmployeesActions, IEmployees } from '../actionCreators/employees';
 import { FETCH_USERS_PENDING, FETCH_USERS_REJECTED, FETCH_USERS_SUCCESS } from '../actionTypes/employees';
 
-interface State {
-  users: IUsers[];
+interface IState {
+  employeesList: IEmployees[];
   error: string;
   pending: boolean;
 }
 
-const initState: State = { users: [], error: '', pending: false };
+const initState: IState = { employeesList: [], error: '', pending: false };
 
-export const employeesReducer = (state = initState, action: any) => {
+export const employeesReducer = (state = initState, action: EmployeesActions) => {
   switch (action.type) {
     case FETCH_USERS_SUCCESS:
       return {
-        users: action.payload.data,
+        employeesList: action.payload.data,
         error: null,
         pending: false,
       };
     case FETCH_USERS_REJECTED:
       return {
         error: action.payload.error,
-        users: [],
+        employeesList: [],
         pending: false,
       };
     case FETCH_USERS_PENDING:
       return {
         error: null,
-        users: [],
+        employeesList: [],
         pending: true,
       };
     default:

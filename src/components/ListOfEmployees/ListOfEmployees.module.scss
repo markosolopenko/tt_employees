@@ -1,0 +1,20 @@
+.employees-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  max-width: 70%;
+
+  &__item {
+    margin-top: 10px;
+    padding: 20px;
+    &__first-name {
+      margin-right: 5px;
+    }
+    &__input {
+      &--notactive,
+      &--active {
+        font-weight: bold;
+      }
+    }
+  }
+}

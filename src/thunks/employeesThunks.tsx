@@ -7,7 +7,7 @@ import {
 } from '../actionCreators/employees';
 import { fetchUsers } from '../api/usersRequests';
 
-export const fetchUsersThunk = () => async (dispatch: Dispatch<EmployeesActions>) => {
+export const fetchEmployeesThunk = () => async (dispatch: Dispatch<EmployeesActions>) => {
   dispatch(getUsersPending());
   try {
     const response = await fetchUsers();
