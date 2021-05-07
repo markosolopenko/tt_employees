@@ -1,31 +1,40 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ListOfEmployees } from '../../components/ListOfEmployees/ListOfEmployees';
 import { fetchEmployeesThunk } from '../../thunks/employeesThunks';
 import s from './Employees.module.scss';
+import { Loader } from '../../common/Loader/Loader';
+import { sortEmployeesByLastName } from '../../helpers/sortEmployeesByLastName';
 
-const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-
-export const Employees = () => {
+export const Employees: React.FC = () => {
   const dispatch = useDispatch();
-  const store = useSelector((state) => state);
-  const { employees }: any = store;
-  const { employeesList } = employees;
 
   useEffect(() => {
     dispatch(fetchEmployeesThunk());
   }, []);
 
-  console.log(store);
+  const store = useSelector((state) => state);
+  const { employees }: any = store;
+  const { employeesList } = employees;
+  const updatedArr = useMemo(() => {
+    return sortEmployeesByLastName(employeesList);
+  }, [employeesList]);
+
   return (
     <div className={s['employees-page']}>
-      <div className={s['employees-page__list']}>
-        <div className={s['employees-page__list__title']}>Employees</div>
-        <ListOfEmployees employees={employeesList} />
-      </div>
-      <div className={s['employees-page__birthday']}>
-        <div className={s['employees-page__birthday__title']}>Employees birthday</div>
-      </div>
+      {employeesList.length !== 0 ? (
+        <>
+          <div className={s['employees-page__list']}>
+            <div className={s['employees-page__list__title']}>Employees</div>
+            <ListOfEmployees sortedEmployees={updatedArr} />
+          </div>
+          <div className={s['employees-page__birthday']}>
+            <div className={s['employees-page__birthday__title']}>Employees birthday</div>
+          </div>
+        </>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };

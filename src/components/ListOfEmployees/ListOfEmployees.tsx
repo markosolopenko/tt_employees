@@ -1,54 +1,71 @@
 import React, { useState } from 'react';
 import { IEmployees } from '../../actionCreators/employees';
+import { INewObject } from '../../helpers/sortEmployeesByLastName';
 import s from './ListOfEmployees.module.scss';
 
 interface IProps {
-  employees: IEmployees[];
+  sortedEmployees: INewObject[];
 }
-interface IState {
-  ids: number[];
-}
+const initialState: number[] = JSON.parse(localStorage.getItem('selectedUsers') || '[]');
 
-const initState: IState = { ids: [] };
-export const ListOfEmployees: React.FC<IProps> = ({ employees }: IProps) => {
-  const [values, setCurrValues] = useState(initState);
+export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) => {
+  const [idsArray, setCurrValues] = useState(initialState);
 
   const handleActiveChange = (id: number) => {
-    setCurrValues({ ids: [...values.ids, id] });
+    setCurrValues([...idsArray, id]);
+    localStorage.setItem('selectedUsers', JSON.stringify([...idsArray, id]));
   };
   const handleNotActiveChange = (id: number) => {
-    setCurrValues({ ids: values.ids.filter((item) => item !== id) });
+    const updatedArray = idsArray.filter((item) => item !== id);
+    setCurrValues(updatedArray);
+    localStorage.setItem('selectedUsers', JSON.stringify(updatedArray));
   };
-
-  const { ids } = values;
 
   return (
     <div className={s['employees-list']}>
-      {employees.map((employee) => {
-        return (
-          <div className={s['employees-list__item']} key={employee.id}>
-            <span className={s['employees-list__item__first-name']}>{employee.firstName}</span>
-            <span className={s['employees-list__item__last-name']}>{employee.lastName}</span>
-            <div className={s['employees-list__item__dob']}>{employee.dob}</div>
-
-            <label className={s['employees-list__item__input--notactive']}>not active</label>
-            <input
-              type="radio"
-              value="notactive"
-              onChange={() => handleNotActiveChange(employee.id)}
-              checked={!ids.includes(employee.id)}
-            />
-
-            <label className={s['employees-list__item__input--active']}>active</label>
-            <input
-              type="radio"
-              value="active"
-              checked={ids.includes(employee.id)}
-              onChange={() => handleActiveChange(employee.id)}
-            />
+      {sortedEmployees.map((obj, index) => (
+        <div key={index} className={s['employees-list__box']}>
+          <div className={s['employees-list__letter']}>{obj.letter}</div>
+          <div className={s['employees-list__box__card']}>
+            {obj.array.map((employee: IEmployees) =>
+              !obj.isEmpty ? (
+                <div className={s['employees-list__item']} key={employee.id}>
+                  <div
+                    className={`${s['employees-list__item__name']} ${
+                      idsArray.includes(employee.id) && s['employees-list__item__name--active']
+                    }`}
+                  >
+                    {employee.lastName}&nbsp;{employee.firstName}
+                  </div>
+                  <div className={s['employees-list__item__dob']}>{employee.dob}</div>
+                  <div className={s['employees-list__item__input']}>
+                    <label className={s['employees-list__item__input__notactive']}>not active</label>
+                    <input
+                      type="radio"
+                      value="notactive"
+                      onChange={() => handleNotActiveChange(employee.id)}
+                      checked={!idsArray.includes(employee.id)}
+                    />
+                  </div>
+                  <div>
+                    <label className={s['employees-list__item__input__active']}>active</label>
+                    <input
+                      type="radio"
+                      value="active"
+                      checked={idsArray.includes(employee.id)}
+                      onChange={() => handleActiveChange(employee.id)}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className={s['employees-list__item']} key={obj.letter}>
+                  {employee}
+                </div>
+              ),
+            )}
           </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 };
