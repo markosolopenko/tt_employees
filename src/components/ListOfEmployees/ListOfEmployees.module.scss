@@ -14,7 +14,7 @@
   }
   &__item {
     width: 250px;
-    height: 80px;
+
     padding: 10px;
     margin: 10px 10px 0 10px;
     background-color: rgb(240, 231, 231);
@@ -26,8 +26,12 @@
         color: blue;
       }
     }
+    &__dob {
+      margin: 10px 0;
+    }
     &__input {
-      margin-top: 10px;
+      width: max-content;
+
       &__notactive,
       &__active {
         color: rgb(4, 10, 9);

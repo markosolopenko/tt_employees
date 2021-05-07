@@ -38,23 +38,24 @@ export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) =
                     {employee.lastName}&nbsp;{employee.firstName}
                   </div>
                   <div className={s['employees-list__item__dob']}>{employee.dob}</div>
-                  <div className={s['employees-list__item__input']}>
+                  <div
+                    className={s['employees-list__item__input']}
+                    onClick={() => handleNotActiveChange(employee.id)}
+                  >
                     <label className={s['employees-list__item__input__notactive']}>not active</label>
                     <input
                       type="radio"
                       value="notactive"
-                      onChange={() => handleNotActiveChange(employee.id)}
                       checked={!idsArray.includes(employee.id)}
+                      readOnly
                     />
                   </div>
-                  <div>
+                  <div
+                    className={s['employees-list__item__input']}
+                    onClick={() => handleActiveChange(employee.id)}
+                  >
                     <label className={s['employees-list__item__input__active']}>active</label>
-                    <input
-                      type="radio"
-                      value="active"
-                      checked={idsArray.includes(employee.id)}
-                      onChange={() => handleActiveChange(employee.id)}
-                    />
+                    <input type="radio" value="active" checked={idsArray.includes(employee.id)} readOnly />
                   </div>
                 </div>
               ) : (
