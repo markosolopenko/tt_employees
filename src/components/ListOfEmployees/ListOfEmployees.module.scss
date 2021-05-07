@@ -26,11 +26,10 @@
         color: blue;
       }
     }
-    &__dob {
-      margin: 10px 0;
-    }
+
     &__input {
       width: max-content;
+      margin: 10px 0;
 
       &__notactive,
       &__active {

@@ -37,7 +37,6 @@ export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) =
                   >
                     {employee.lastName}&nbsp;{employee.firstName}
                   </div>
-                  <div className={s['employees-list__item__dob']}>{employee.dob}</div>
                   <div
                     className={s['employees-list__item__input']}
                     onClick={() => handleNotActiveChange(employee.id)}
