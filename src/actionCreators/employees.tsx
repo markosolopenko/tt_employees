@@ -1,14 +1,24 @@
-import { FETCH_USERS } from '../actionTypes/employees';
+import { FETCH_USERS_PENDING, FETCH_USERS_REJECTED, FETCH_USERS_SUCCESS } from '../actionTypes/employees';
 
-interface IUsers {
+export interface IEmployees {
   id: number;
   firstName: string;
   lastName: string;
   dob: Date;
 }
+export type EmployeesActions =
+  | { type: 'FETCH_USERS_SUCCESS'; payload: { data: IEmployees[] } }
+  | { type: 'FETCH_USERS_REJECTED'; payload: { error: string } }
+  | { type: 'FETCH_USERS_PENDING' };
 
-export const fetchUsers = (users: IUsers) => {
-  return { type: FETCH_USERS, data: users };
+export const getUsersSuccess = (users: IEmployees[]): EmployeesActions => {
+  return { type: FETCH_USERS_SUCCESS, payload: { data: users } };
 };
 
-export type EmployeesActionTypes = ReturnType<typeof fetchUsers>;
+export const getUsersRejected = (error: string): EmployeesActions => {
+  return { type: FETCH_USERS_REJECTED, payload: { error: error } };
+};
+
+export const getUsersPending = (): EmployeesActions => {
+  return { type: FETCH_USERS_PENDING };
+};

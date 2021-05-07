@@ -1,0 +1,23 @@
+.employees-page {
+  display: flex;
+  height: 100vh;
+
+  &__list {
+    border-right: 1px solid black;
+    overflow-y: scroll;
+    &__title {
+      font-size: 23px;
+      font-weight: bold;
+
+      margin: 20px 0 50px 50px;
+    }
+  }
+  &__birthday {
+    overflow-y: scroll;
+    &__title {
+      margin: 20px 0 50px 50px;
+      font-size: 23px;
+      font-weight: bold;
+    }
+  }
+}

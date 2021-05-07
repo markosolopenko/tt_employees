@@ -1,0 +1,41 @@
+.employees-list {
+  max-width: 1000px;
+  &__box {
+    &__card {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  &__letter {
+    font-weight: bold;
+    font-size: 20px;
+    margin: 5px 20px 0px;
+  }
+  &__item {
+    width: 250px;
+
+    padding: 10px;
+    margin: 10px 10px 0 10px;
+    background-color: rgb(240, 231, 231);
+
+    &__name {
+      font-weight: bold;
+      font-size: 18px;
+      &--active {
+        color: blue;
+      }
+    }
+    &__dob {
+      margin: 10px 0;
+    }
+    &__input {
+      width: max-content;
+
+      &__notactive,
+      &__active {
+        color: rgb(4, 10, 9);
+      }
+    }
+  }
+}
