@@ -18,7 +18,7 @@ export const Employees: React.FC = () => {
   const { employees }: any = store;
   const { employeesList } = employees;
 
-  const updatedArr = useMemo(() => {
+  const sortedArrByLastName = useMemo(() => {
     return sortEmployeesByLastName(employeesList);
   }, [employeesList]);
 
@@ -28,7 +28,7 @@ export const Employees: React.FC = () => {
         <>
           <div className={s['employees-page__list']}>
             <div className={s['employees-page__list__title']}>Employees</div>
-            <ListOfEmployees sortedEmployees={updatedArr} />
+            <ListOfEmployees sortedEmployees={sortedArrByLastName} />
           </div>
           <div className={s['employees-page__birthday']}>
             <div className={s['employees-page__birthday__title']}>Employees birthday</div>

@@ -1,28 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IEmployees } from '../../actionCreators/employees';
+import { INewObj, sortEmployeesByMonths } from '../../helpers/sortEmployeesByMonths';
 
 import s from './BirthdaysList.module.scss';
 
 interface IProps {
   employeesList: IEmployees[];
 }
-
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export const BirthdaysList: React.FC<IProps> = ({ employeesList }) => {
   const [selectedIdsList, setSelectedIds] = useState(
@@ -35,26 +20,38 @@ export const BirthdaysList: React.FC<IProps> = ({ employeesList }) => {
     setSelectedIds(JSON.parse(localStorage.getItem('selectedUsers') || '[]'));
   }, [selectedIds]);
 
-  const selectedUsers = useMemo(() => {
+  const selectedEmployees = useMemo(() => {
     return employeesList.filter((employee) => selectedIdsList.includes(employee.id));
   }, [selectedIdsList]);
 
+  const sortedArrayByDate = useMemo(() => {
+    return sortEmployeesByMonths(selectedEmployees);
+  }, [selectedEmployees]);
+  let alEmpty = true;
   return (
     <div className={s['birthdays-list']}>
-      {selectedUsers.map((user) => {
-        const date = new Date(user.dob);
-        const day = days[date.getDay()];
-        const month = months[date.getMonth()];
-        const year = date.getFullYear();
+      {sortedArrayByDate.map((obj: INewObj, index: number) => {
         return (
-          <div className={s['birthdays-list__item']} key={user.id}>
-            <div className={s['birthdays-list__item__month']}>{month}</div>
-            <div className={s['birthdays-list__item__info']}>
-              &#9679;&nbsp;{user.lastName}&nbsp;{user.firstName} - {day} {month}, {year} year
+          obj.array.length !== 0 && (
+            <div key={index}>
+              <div className={s['birthdays-list__month']}>{obj.month}</div>
+              {obj.array.map((user: IEmployees, index: number) => {
+                alEmpty = false;
+                return (
+                  <div className={s['birthdays-list__item']} key={user.id}>
+                    <div className={s['birthdays-list__item__info']}>
+                      &#9679;&nbsp;{user.lastName}&nbsp;{user.firstName} - {obj.days[index]} {obj.month}
+                      ,&nbsp;
+                      {obj.years[index]} year
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </div>
+          )
         );
       })}
+      {alEmpty && <div className={s['birthdays-list__message']}>Employees List is empty</div>}
     </div>
   );
 };

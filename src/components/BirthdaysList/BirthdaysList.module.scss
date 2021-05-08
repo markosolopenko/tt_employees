@@ -1,14 +1,18 @@
 .birthdays-list {
-  &__item {
-    padding: 20px;
+  &__message {
+    font-weight: bold;
+    font-size: 20px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 60px;
-
-    &__month {
-      font-weight: bold;
-    }
+    justify-content: center;
+    color: rgb(150, 105, 255);
+  }
+  &__month {
+    font-weight: bold;
+    color: red;
+    padding: 10px;
+  }
+  &__item {
+    padding: 10px;
     &__info {
       font-weight: bold;
     }

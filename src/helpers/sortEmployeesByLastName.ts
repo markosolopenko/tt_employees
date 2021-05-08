@@ -1,6 +1,8 @@
 import { IEmployees } from '../actionCreators/employees';
+import { alphabetUpper } from '../constants/lists';
 
-const alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+const alphabet = alphabetUpper;
+
 export interface INewObject {
   letter: string;
   array: IEmployees[] | any;
@@ -12,7 +14,7 @@ export const sortEmployeesByLastName: Function = (employees: IEmployees[]) => {
   let isTheSame = false;
   for (let i = 0; i < alphabet.length; i++) {
     for (let index = 0; index < employees.length; index++) {
-      if (alphabet[i] === employees[index].lastName.split('')[0]) {
+      if (alphabet[i] === employees[index].lastName[0]) {
         isTheSame = true;
         newObj.letter = alphabet[i];
         newObj.array.push(employees[index]);
