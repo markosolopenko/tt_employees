@@ -1,0 +1,16 @@
+.birthdays-list {
+  &__item {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 60px;
+
+    &__month {
+      font-weight: bold;
+    }
+    &__info {
+      font-weight: bold;
+    }
+  }
+}

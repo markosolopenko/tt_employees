@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
-import { IEmployees } from '../../actionCreators/employees';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteEmployeeId, IEmployees, selectNewEmployee } from '../../actionCreators/employees';
 import { INewObject } from '../../helpers/sortEmployeesByLastName';
 import s from './ListOfEmployees.module.scss';
 
 interface IProps {
   sortedEmployees: INewObject[];
 }
-const initialState: number[] = JSON.parse(localStorage.getItem('selectedUsers') || '[]');
 
 export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) => {
-  const [idsArray, setCurrValues] = useState(initialState);
+  const dispatch = useDispatch();
+  const { employees }: any = useSelector((state) => state);
+  const { selectedIds } = employees;
 
   const handleActiveChange = (id: number) => {
-    setCurrValues([...idsArray, id]);
-    localStorage.setItem('selectedUsers', JSON.stringify([...idsArray, id]));
+    dispatch(selectNewEmployee(id));
+    localStorage.setItem('selectedUsers', JSON.stringify([...selectedIds, id]));
   };
   const handleNotActiveChange = (id: number) => {
-    const updatedArray = idsArray.filter((item) => item !== id);
-    setCurrValues(updatedArray);
-    localStorage.setItem('selectedUsers', JSON.stringify(updatedArray));
+    dispatch(deleteEmployeeId(id));
+    const updateArr = selectedIds.filter((item: number) => item !== id);
+    localStorage.setItem('selectedUsers', JSON.stringify(updateArr));
   };
 
   return (
@@ -32,7 +34,7 @@ export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) =
                 <div className={s['employees-list__item']} key={employee.id}>
                   <div
                     className={`${s['employees-list__item__name']} ${
-                      idsArray.includes(employee.id) && s['employees-list__item__name--active']
+                      selectedIds.includes(employee.id) && s['employees-list__item__name--active']
                     }`}
                   >
                     {employee.lastName}&nbsp;{employee.firstName}
@@ -45,7 +47,7 @@ export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) =
                     <input
                       type="radio"
                       value="notactive"
-                      checked={!idsArray.includes(employee.id)}
+                      checked={!selectedIds.includes(employee.id)}
                       readOnly
                     />
                   </div>
@@ -54,7 +56,7 @@ export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) =
                     onClick={() => handleActiveChange(employee.id)}
                   >
                     <label className={s['employees-list__item__input__active']}>active</label>
-                    <input type="radio" value="active" checked={idsArray.includes(employee.id)} readOnly />
+                    <input type="radio" value="active" checked={selectedIds.includes(employee.id)} readOnly />
                   </div>
                 </div>
               ) : (

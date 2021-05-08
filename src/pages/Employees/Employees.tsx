@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ListOfEmployees } from '../../components/ListOfEmployees/ListOfEmployees';
 import { fetchEmployeesThunk } from '../../thunks/employeesThunks';
 import s from './Employees.module.scss';
 import { Loader } from '../../common/Loader/Loader';
 import { sortEmployeesByLastName } from '../../helpers/sortEmployeesByLastName';
+import { BirthdaysList } from '../../components/BirthdaysList/BirthdaysList';
 
 export const Employees: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ export const Employees: React.FC = () => {
   const store = useSelector((state) => state);
   const { employees }: any = store;
   const { employeesList } = employees;
+
   const updatedArr = useMemo(() => {
     return sortEmployeesByLastName(employeesList);
   }, [employeesList]);
@@ -30,6 +32,7 @@ export const Employees: React.FC = () => {
           </div>
           <div className={s['employees-page__birthday']}>
             <div className={s['employees-page__birthday__title']}>Employees birthday</div>
+            <BirthdaysList employeesList={employeesList} />
           </div>
         </>
       ) : (
