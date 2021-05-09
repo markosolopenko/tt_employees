@@ -16,27 +16,26 @@ export const Employees: React.FC = () => {
 
   const store = useSelector((state) => state);
   const { employees }: any = store;
-  const { employeesList } = employees;
+  const { employeesList, pending } = employees;
 
   const sortedArrByLastName = useMemo(() => {
     return sortEmployeesByLastName(employeesList);
   }, [employeesList]);
+
+  if (pending) {
+    return <Loader />;
+  }
+
   return (
     <div className={s['employees-page']}>
-      {sortedArrByLastName.length !== 0 ? (
-        <>
-          <div className={s['employees-page__list']}>
-            <div className={s['employees-page__list__title']}>Employees</div>
-            <ListOfEmployees sortedEmployees={sortedArrByLastName} />
-          </div>
-          <div className={s['employees-page__birthday']}>
-            <div className={s['employees-page__birthday__title']}>Employees birthday</div>
-            <BirthdaysList employeesList={employeesList} />
-          </div>
-        </>
-      ) : (
-        <Loader />
-      )}
+      <div className={s['employees-page__list']}>
+        <div className={s['employees-page__list__title']}>Employees</div>
+        <ListOfEmployees sortedEmployees={sortedArrByLastName} />
+      </div>
+      <div className={s['employees-page__birthday']}>
+        <div className={s['employees-page__birthday__title']}>Employees birthday</div>
+        <BirthdaysList employeesList={employeesList} />
+      </div>
     </div>
   );
 };

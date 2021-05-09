@@ -10,19 +10,12 @@ interface IProps {
 }
 
 export const BirthdaysList: React.FC<IProps> = ({ employeesList }) => {
-  const [selectedIdsList, setSelectedIds] = useState(
-    JSON.parse(localStorage.getItem('selectedUsers') || '[]'),
-  );
   const { employees }: any = useSelector((state) => state);
   const { selectedIds } = employees;
 
-  useEffect(() => {
-    setSelectedIds(JSON.parse(localStorage.getItem('selectedUsers') || '[]'));
-  }, [selectedIds]);
-
   const selectedEmployees = useMemo(() => {
-    return employeesList.filter((employee) => selectedIdsList.includes(employee.id));
-  }, [selectedIdsList]);
+    return employeesList.filter((employee) => selectedIds.includes(employee.id));
+  }, [selectedIds]);
 
   const sortedArrayByDate = useMemo(() => {
     return sortEmployeesByMonths(selectedEmployees);
