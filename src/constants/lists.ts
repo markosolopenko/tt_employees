@@ -26,6 +26,5 @@ export const monthsSorted = [
   'November',
   'December',
 ];
-export const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export const alphabetUpper = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');

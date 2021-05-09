@@ -1,15 +1,14 @@
 import { IEmployees } from '../actionCreators/employees';
-import { days, months, monthsSorted } from '../constants/lists';
+import { months, monthsSorted } from '../constants/lists';
 
 export interface INewObj {
   month: string;
   array: IEmployees[];
-  days: string[];
+  days: number[];
   years: number[];
 }
 const monthsFromNow = months;
 const monthsSortedByCalendar = monthsSorted;
-const daysOfWeek = days;
 
 export const sortEmployeesByMonths: Function = (selectedEmployees: IEmployees[]) => {
   let newObj: INewObj = { month: '', array: [], days: [], years: [] };
@@ -18,7 +17,7 @@ export const sortEmployeesByMonths: Function = (selectedEmployees: IEmployees[])
     newObj.month = monthsFromNow[i];
     for (let index = 0; index < selectedEmployees.length; index++) {
       const date = new Date(selectedEmployees[index].dob);
-      const day = daysOfWeek[date.getDay()];
+      const day = date.getDate();
       const month = monthsSortedByCalendar[date.getMonth()];
       const year = date.getFullYear();
 

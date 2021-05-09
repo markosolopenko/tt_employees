@@ -21,10 +21,9 @@ export const Employees: React.FC = () => {
   const sortedArrByLastName = useMemo(() => {
     return sortEmployeesByLastName(employeesList);
   }, [employeesList]);
-
   return (
     <div className={s['employees-page']}>
-      {employeesList.length !== 0 ? (
+      {sortedArrByLastName.length !== 0 ? (
         <>
           <div className={s['employees-page__list']}>
             <div className={s['employees-page__list__title']}>Employees</div>

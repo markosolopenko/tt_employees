@@ -6,9 +6,9 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path={Routes.EMPLOYEES} component={Employees} />
+        <Route path={'/tt_employees'} component={Employees} />
 
-        <Redirect to={Routes.EMPLOYEES} />
+        <Redirect to={'/tt_employees'} />
       </Switch>
     </div>
   );
