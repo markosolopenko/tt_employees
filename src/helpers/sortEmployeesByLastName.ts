@@ -12,15 +12,19 @@ export const sortEmployeesByLastName: Function = (employees: IEmployees[]) => {
   const newArr = [];
   let newObj: INewObject = { letter: '', array: [], isEmpty: false };
   let isTheSame = false;
+  let index = 0;
 
   const sortedArr = employees.sort((a, b) => (a.lastName > b.lastName ? 1 : -1));
 
   for (let i = 0; i < alphabet.length; i++) {
     newObj.letter = alphabet[i];
-    for (let index = 0; index < sortedArr.length; index++) {
-      if (alphabet[i] === sortedArr[index].lastName[0]) {
+    while (index < sortedArr.length) {
+      if (alphabet[i] !== sortedArr[index].lastName[0]) {
+        break;
+      } else if (alphabet[i] === sortedArr[index].lastName[0]) {
         isTheSame = true;
         newObj.array.push(sortedArr[index]);
+        index++;
       }
     }
     if (!isTheSame) {
@@ -32,5 +36,6 @@ export const sortEmployeesByLastName: Function = (employees: IEmployees[]) => {
     newArr.push(newObj);
     newObj = { letter: '', array: [], isEmpty: false };
   }
+
   return newArr;
 };

@@ -1,6 +1,6 @@
 import { EmployeesActions, IEmployees } from '../actionCreators/employees';
 import {
-  DELETE_EMPLOYEE_ID,
+  DELETE_EMPLOYEE,
   FETCH_USERS_PENDING,
   FETCH_USERS_REJECTED,
   FETCH_USERS_SUCCESS,
@@ -11,14 +11,14 @@ interface IState {
   employeesList: IEmployees[];
   error: string;
   pending: boolean;
-  selectedIds: number[];
+  selectedEmployees: IEmployees[];
 }
 
 const initState: IState = {
   employeesList: [],
   error: '',
   pending: false,
-  selectedIds: JSON.parse(localStorage.getItem('selectedUsers') || '[]'),
+  selectedEmployees: JSON.parse(localStorage.getItem('selectedUsers') || '[]'),
 };
 
 export const employeesReducer = (state = initState, action: EmployeesActions) => {
@@ -45,14 +45,21 @@ export const employeesReducer = (state = initState, action: EmployeesActions) =>
         pending: true,
       };
     case SELECT_NEW_EMPLOYEE:
+      const { employee } = action.payload;
+      localStorage.setItem('selectedUsers', JSON.stringify([...state.selectedEmployees, employee]));
       return {
         ...state,
-        selectedIds: [...state.selectedIds, action.payload.id],
+        selectedEmployees: [...state.selectedEmployees, employee],
       };
-    case DELETE_EMPLOYEE_ID:
+    case DELETE_EMPLOYEE:
+      const { id } = action.payload;
+      localStorage.setItem(
+        'selectedUsers',
+        JSON.stringify(state.selectedEmployees.filter((user) => user.id !== id)),
+      );
       return {
         ...state,
-        selectedIds: state.selectedIds.filter((id) => id !== action.payload.id),
+        selectedEmployees: state.selectedEmployees.filter((employee) => employee.id !== id),
       };
     default:
       return state;

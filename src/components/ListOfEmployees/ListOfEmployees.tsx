@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteEmployeeId, IEmployees, selectNewEmployee } from '../../actionCreators/employees';
+import { deleteEmployee, IEmployees, selectNewEmployee } from '../../actionCreators/employees';
 import { INewObject } from '../../helpers/sortEmployeesByLastName';
 import s from './ListOfEmployees.module.scss';
 
@@ -11,16 +11,13 @@ interface IProps {
 export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) => {
   const dispatch = useDispatch();
   const { employees }: any = useSelector((state) => state);
-  const { selectedIds } = employees;
+  const { selectedEmployees } = employees;
 
-  const handleActiveChange = (id: number) => {
-    dispatch(selectNewEmployee(id));
-    localStorage.setItem('selectedUsers', JSON.stringify([...selectedIds, id]));
+  const handleActiveChange = (employee: IEmployees) => {
+    dispatch(selectNewEmployee(employee));
   };
   const handleNotActiveChange = (id: number) => {
-    dispatch(deleteEmployeeId(id));
-    const updateArr = selectedIds.filter((item: number) => item !== id);
-    localStorage.setItem('selectedUsers', JSON.stringify(updateArr));
+    dispatch(deleteEmployee(id));
   };
 
   return (
@@ -34,7 +31,8 @@ export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) =
                 <div className={s['employees-list__item']} key={employee.id}>
                   <div
                     className={`${s['employees-list__item__name']} ${
-                      selectedIds.includes(employee.id) && s['employees-list__item__name--active']
+                      selectedEmployees.some((user: IEmployees) => user.id === employee.id) &&
+                      s['employees-list__item__name--active']
                     }`}
                   >
                     {employee.lastName}&nbsp;{employee.firstName}
@@ -47,16 +45,21 @@ export const ListOfEmployees: React.FC<IProps> = ({ sortedEmployees }: IProps) =
                     <input
                       type="radio"
                       value="notactive"
-                      checked={!selectedIds.includes(employee.id)}
+                      checked={!selectedEmployees.some((user: IEmployees) => user.id === employee.id)}
                       readOnly
                     />
                   </div>
                   <div
                     className={s['employees-list__item__input']}
-                    onClick={() => handleActiveChange(employee.id)}
+                    onClick={() => handleActiveChange(employee)}
                   >
                     <label className={s['employees-list__item__input__active']}>active</label>
-                    <input type="radio" value="active" checked={selectedIds.includes(employee.id)} readOnly />
+                    <input
+                      type="radio"
+                      value="active"
+                      checked={selectedEmployees.some((user: IEmployees) => user.id === employee.id)}
+                      readOnly
+                    />
                   </div>
                 </div>
               ) : (

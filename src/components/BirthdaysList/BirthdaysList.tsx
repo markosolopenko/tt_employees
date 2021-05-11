@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { IEmployees } from '../../actionCreators/employees';
 import { INewObj, sortEmployeesByMonths } from '../../helpers/sortEmployeesByMonths';
@@ -11,16 +11,14 @@ interface IProps {
 
 export const BirthdaysList: React.FC<IProps> = ({ employeesList }) => {
   const { employees }: any = useSelector((state) => state);
-  const { selectedIds } = employees;
-
-  const selectedEmployees = useMemo(() => {
-    return employeesList.filter((employee) => selectedIds.includes(employee.id));
-  }, [selectedIds]);
+  const { selectedEmployees } = employees;
 
   const sortedArrayByDate = useMemo(() => {
     return sortEmployeesByMonths(selectedEmployees);
   }, [selectedEmployees]);
+
   let alEmpty = true;
+
   return (
     <div className={s['birthdays-list']}>
       {sortedArrayByDate.map((obj: INewObj, index: number) => {
